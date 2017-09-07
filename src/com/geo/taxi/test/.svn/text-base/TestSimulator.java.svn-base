@@ -1,0 +1,14 @@
+package com.geo.taxi.test;
+
+import java.io.FileNotFoundException;
+
+import com.geo.taxi.recommender.MyRecommender;
+import com.geo.taxi.recommender.Simulator;
+
+public class TestSimulator {
+	public static void main(String[] args) throws FileNotFoundException {
+		Simulator sim = new Simulator(new MyRecommender(), 1212848405,
+				1212848405 + 6 * 3600);
+		sim.start();
+	}
+}

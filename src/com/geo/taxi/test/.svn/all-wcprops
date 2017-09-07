@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/MyTaxiProject/src/com/geo/taxi/test
+END
+TestGraph.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/test/TestGraph.java
+END
+TestGraphProbability.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/test/TestGraphProbability.java
+END
+HighestProbabilityNeighborRecommender.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/test/HighestProbabilityNeighborRecommender.java
+END
+TestSimulator.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/test/TestSimulator.java
+END

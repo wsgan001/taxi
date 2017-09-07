@@ -1,0 +1,167 @@
+package com.geo.taxi.recommender;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+
+import javax.swing.text.Highlighter.HighlightPainter;
+
+import com.geo.taxi.config.Config;
+
+public class Simulator {
+	private HashMap<Integer, Grid> graph;
+	private HashMap<Long, ArrayList<Task>> tasks;
+	Vehicle[] vehicles;
+	long startTime, endTime;
+	Recommender recommender;
+
+	private Simulator() throws FileNotFoundException {
+		graph = new HashMap<Integer, Grid>();
+		tasks = new HashMap<Long, ArrayList<Task>>();
+
+	}
+
+	private void loadPassengers() {
+		Random rand = new Random(0);
+		ArrayList<Grid> grids = new ArrayList<Grid>(graph.values());
+		for (int i = 0; i < 10000; i++) {
+			long time = startTime + rand.nextInt((int) (endTime - startTime));
+			Grid appear = grids.get(rand.nextInt(grids.size()));
+			Grid destination = grids.get(rand.nextInt(grids.size()));
+			int waitingTime = rand.nextInt(15 * 60);
+			if (tasks.get(time) == null)
+				tasks.put(time, new ArrayList<Task>());
+			Passenger p = new Passenger(appear, destination, waitingTime);
+			tasks.get(time).add(new PassengerAppearance(p));
+			time = time + waitingTime;
+			if (tasks.get(time) == null)
+				tasks.put(time, new ArrayList<Task>());
+			tasks.get(time).add(new PassengerRemoveTask(p));
+		}
+	}
+
+	public Simulator(Recommender recommender, long startTime, long endTime)
+			throws FileNotFoundException {
+		this();
+		this.recommender = recommender;
+		System.setErr(new PrintStream(new File("k:/simulator"
+				+ recommender.getClass().getName() + ".log")));
+		this.startTime = startTime;
+		this.endTime = endTime;
+		loadGraph();
+		loadVehicles();
+		loadPassengers();
+	}
+
+	private void loadVehicles() {
+		vehicles = new Vehicle[30];
+		Random rand = new Random(0);
+		for (int i = 0; i < vehicles.length; i++) {
+			Grid g = null;
+			while ((g = graph.get(23 * Config.getNumoflonbins() + 21)) == null)
+				;
+			vehicles[i] = new Vehicle("V" + i, g);
+			vehicles[i].setOff();
+			long time = startTime;
+			if (tasks.get(time) == null)
+				tasks.put(time, new ArrayList<Task>());
+			tasks.get(time)
+					.add(new VehicleTurnOffTask(vehicles[i], rand
+							.nextInt(2 * 3600)));
+		}
+	}
+
+	private void loadGraph() throws FileNotFoundException {
+		Scanner sc = new Scanner(new File(Config.getGraphpath()));
+		while (sc.hasNext()) {
+			String line = sc.nextLine();
+			Scanner lineScanner = new Scanner(line);
+			int from = lineScanner.nextInt();
+			int to = lineScanner.nextInt();
+			double time = lineScanner.nextDouble();
+			if (graph.get(from) == null)
+				graph.put(from, new Grid(from));
+			if (graph.get(to) == null)
+				graph.put(to, new Grid(to));
+			graph.get(from).addNeighbor(graph.get(to), time);
+		}
+		final int count = Config.getNumoflatbins() * Config.getNumoflonbins();
+		for (int i = 0; i < count; i++) {
+			Grid from = graph.get(i);
+			if (from == null)
+				continue;
+			for (int j = 0; j < count; j++) {
+				if (i == j)
+					continue;
+				Grid to = graph.get(j);
+				if (to == null)
+					continue;
+				if (from.getNeighbors().contains(to)
+						&& !to.getNeighbors().contains(from)) {
+					to.addNeighbor(from, from.getTime(to));
+				}
+			}
+		}
+	}
+
+	public void start() throws FileNotFoundException {
+		for (long t = startTime; t < endTime; t++) {
+			ArrayList<Vehicle> vehiclesNeedRecommendation = new ArrayList<Vehicle>();
+			for (Vehicle v : vehicles)
+				if (v.isOn()
+						&& (v.getRoute() == null || v.getRoute().isEmpty()))
+					vehiclesNeedRecommendation.add(v);
+			if (!vehiclesNeedRecommendation.isEmpty()) {
+				loadProbabilities(t);
+				System.err.println(vehiclesNeedRecommendation);
+				System.err.println("recommending");
+				recommender.Recommend(vehiclesNeedRecommendation, graph);
+			}
+			if (tasks.get(t) != null && tasks.get(t).size() > 0) {
+				System.err.println(new Date(t * 1000));
+				for (Task task : tasks.get(t))
+					task.execute(tasks, t, graph);
+			}
+		}
+		for (Vehicle v : vehicles) {
+			System.out.print(v.getId() + "\t");
+			System.out.print(v.getDistanceTravelled() + "\t"
+					+ v.getLiveDistanceTravelled() + "\t");
+			System.out.print(v.getDistancePerformance() + "\t");
+			System.out.print(v.getTimeTravelled() + "\t"
+					+ v.getLiveTimeTravelled() + "\t");
+			System.out.print(v.getTimePerformance()+"\t");
+			System.out.println(v.getNumOfHunts() + "\t");
+		}
+	}
+
+	private void assignInitialTasks(long t) {
+		for (Vehicle v : vehicles) {
+			long time = t;
+			if (tasks.get(time) == null)
+				tasks.put(time, new ArrayList<Task>());
+			tasks.get(time).add(new VehicleMovementTask(v));
+		}
+	}
+
+	private void loadProbabilities(long t) throws FileNotFoundException {
+		Scanner sc = new Scanner(new File(
+				"K:\\cabspottingdata\\processedData\\probGrid\\1.txt"));
+		sc.nextLine();
+		for (int i = 0; i < Config.getNumoflatbins(); i++) {
+			Scanner lineScanner = new Scanner(sc.nextLine());
+			for (int j = 0; j < Config.getNumoflonbins(); j++) {
+				int id = i * Config.getNumoflonbins() + j;
+				if (graph.get(id) != null) {
+					graph.get(id).setProbability(lineScanner.nextDouble());
+					graph.get(id).setMaxNumberOfTaxis(5);
+				}
+			}
+		}
+	}
+}

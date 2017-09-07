@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/3/trunk/MyTaxiProject/src/com/geo/taxi/recommender
+END
+VehicleMovementTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/VehicleMovementTask.java
+END
+Taxi.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/3/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Taxi.java
+END
+PassengerAppearance.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/PassengerAppearance.java
+END
+MyRecommender.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/MyRecommender.java
+END
+VehicleTurnOnTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/VehicleTurnOnTask.java
+END
+Vehicle.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Vehicle.java
+END
+VehicleTurnOffTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/VehicleTurnOffTask.java
+END
+Passenger.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Passenger.java
+END
+Recommender.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Recommender.java
+END
+Grid.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Grid.java
+END
+Task.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Task.java
+END
+Simulator.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/Simulator.java
+END
+PassengerRemoveTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/5/trunk/MyTaxiProject/src/com/geo/taxi/recommender/PassengerRemoveTask.java
+END
